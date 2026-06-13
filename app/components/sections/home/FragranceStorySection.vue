@@ -4,20 +4,6 @@ import { onMounted, onUnmounted, ref } from 'vue'
 const sectionRef = ref<HTMLElement | null>(null)
 let cleanupAnimation: (() => void) | undefined
 
-const fragranceNotes = [
-  {
-    label: 'Top Notes',
-    value: 'Bergamot, Fresh Citrus',
-  },
-  {
-    label: 'Heart Notes',
-    value: 'Jasmine, Soft Rose',
-  },
-  {
-    label: 'Base Notes',
-    value: 'Amber, Musk, Sandalwood',
-  },
-]
 
 onMounted(() => {
   if (!sectionRef.value || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -84,18 +70,6 @@ onUnmounted(() => {
           class="mt-9 grid gap-4 sm:grid-cols-3"
           aria-label="HRM Parfume fragrance notes"
         >
-          <div
-            v-for="note in fragranceNotes"
-            :key="note.label"
-            class="border-t border-hrm-ink/14 pt-5"
-          >
-            <dt class="text-xs font-bold uppercase tracking-[0.2em] text-hrm-gold">
-              {{ note.label }}
-            </dt>
-            <dd class="mt-4 text-base font-semibold leading-7 text-hrm-ink">
-              {{ note.value }}
-            </dd>
-          </div>
         </dl>
       </div>
     </div>
