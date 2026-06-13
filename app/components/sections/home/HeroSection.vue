@@ -25,21 +25,6 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
   })
 
   timeline
-    .from('[data-hero-brand], [data-hero-nav] a', {
-      y: -14,
-      autoAlpha: 0,
-      duration: 0.58,
-      stagger: 0.045,
-    })
-    .from(
-      '[data-hero-kicker]',
-      {
-        y: 10,
-        autoAlpha: 0,
-        duration: 0.58,
-      },
-      '-=0.42',
-    )
     .from(
       '[data-hero-reveal]',
       {
@@ -47,7 +32,6 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
         autoAlpha: 0,
         stagger: 0.11,
       },
-      '-=0.18',
     )
     .from(
       '[data-hero-image]',
@@ -125,7 +109,6 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
     <header class="section-shell flex flex-col gap-4 border-b border-hrm-ink/10 py-4 sm:flex-row sm:items-center sm:justify-between">
       <a
         href="#home"
-        data-hero-brand
         class="focus-ring font-serif text-2xl italic leading-none text-hrm-ink"
         aria-label="HRM Parfume home"
       >
@@ -133,7 +116,6 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
       </a>
 
       <nav
-        data-hero-nav
         class="flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-hrm-charcoal/70"
         aria-label="Primary navigation"
       >
@@ -149,10 +131,7 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
     </header>
 
     <div class="section-shell pt-5">
-      <p
-        data-hero-kicker
-        class="text-center text-[0.68rem] font-bold uppercase tracking-[0.2em] text-hrm-charcoal/62 sm:text-left"
-      >
+      <p class="text-center text-[0.68rem] font-bold uppercase tracking-[0.2em] text-hrm-charcoal/62 sm:text-left">
         Discover your signature scent with HRM Parfume.
       </p>
     </div>
