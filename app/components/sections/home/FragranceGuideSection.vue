@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const sectionRef = ref<HTMLElement | null>(null)
-let cleanupAnimation: (() => void) | undefined
 
 const guideCards = [
   'Choose Aurora Bloom if you love soft, fresh, floral elegance for daily wear.',
@@ -16,32 +15,76 @@ const useTips = [
   'Store in a cool, dry place',
 ]
 
-onMounted(() => {
-  if (!sectionRef.value || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return
-  }
-
-  const { $gsap } = useNuxtApp()
-  const ctx = $gsap.context(() => {
-    $gsap.from('[data-guide-reveal]', {
-      y: 24,
-      opacity: 0,
-      duration: 0.85,
+useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
+  const timeline = gsap.timeline({
+    defaults: {
+      duration: 0.82,
       ease: 'power3.out',
+    },
+    scrollTrigger: {
+      trigger: root,
+      start: 'top 74%',
+      once: true,
+    },
+  })
+
+  timeline
+    .from('[data-guide-heading] > *', {
+      y: isMobile ? 20 : 30,
+      autoAlpha: 0,
       stagger: 0.1,
+    })
+    .from(
+      '[data-guide-card]',
+      {
+        y: isMobile ? 20 : 32,
+        autoAlpha: 0,
+        stagger: 0.1,
+      },
+      '-=0.36',
+    )
+    .from(
+      '[data-guide-aside]',
+      {
+        x: isMobile ? 0 : 28,
+        y: isMobile ? 22 : 0,
+        autoAlpha: 0,
+      },
+      '-=0.44',
+    )
+    .from(
+      '[data-guide-tip]',
+      {
+        x: -14,
+        autoAlpha: 0,
+        stagger: 0.075,
+        duration: 0.54,
+      },
+      '-=0.3',
+    )
+    .from(
+      '[data-guide-line]',
+      {
+        scaleX: 0,
+        transformOrigin: 'left center',
+        stagger: 0.075,
+        duration: 0.5,
+      },
+      '<',
+    )
+
+  if (!isMobile) {
+    gsap.to('[data-guide-aside]', {
+      yPercent: -4,
+      ease: 'none',
       scrollTrigger: {
-        trigger: sectionRef.value,
-        start: 'top 74%',
-        once: true,
+        trigger: root,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 0.9,
       },
     })
-  }, sectionRef.value)
-
-  cleanupAnimation = () => ctx.revert()
-})
-
-onUnmounted(() => {
-  cleanupAnimation?.()
+  }
 })
 </script>
 
@@ -52,7 +95,7 @@ onUnmounted(() => {
   >
     <div class="section-shell">
       <div
-        data-guide-reveal
+        data-guide-heading
         class="grid gap-6 lg:grid-cols-[0.85fr_1fr] lg:items-end"
       >
         <div>
@@ -69,12 +112,12 @@ onUnmounted(() => {
 
       <div class="mt-12 grid gap-6 lg:grid-cols-[1fr_0.78fr]">
         <div
-          data-guide-reveal
           class="grid gap-4 sm:grid-cols-2"
         >
           <article
             v-for="(card, index) in guideCards"
             :key="card"
+            data-guide-card
             class="rounded-lg border border-hrm-ink/10 bg-hrm-ivory p-6"
           >
             <p class="text-xs font-bold uppercase tracking-[0.2em] text-hrm-gold">
@@ -87,7 +130,7 @@ onUnmounted(() => {
         </div>
 
         <aside
-          data-guide-reveal
+          data-guide-aside
           class="rounded-lg bg-hrm-ink p-6 text-white"
           aria-labelledby="how-to-use-title"
         >
@@ -101,9 +144,11 @@ onUnmounted(() => {
             <li
               v-for="tip in useTips"
               :key="tip"
+              data-guide-tip
               class="flex gap-3 text-sm leading-7 text-white/72"
             >
               <span
+                data-guide-line
                 class="mt-3 h-px w-6 shrink-0 bg-hrm-gold"
                 aria-hidden="true"
               />

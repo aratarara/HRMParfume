@@ -1,46 +1,95 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const sectionRef = ref<HTMLElement | null>(null)
-let cleanupAnimation: (() => void) | undefined
 
-onMounted(() => {
-  if (!sectionRef.value || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
+  gsap.set('[data-cta-image]', {
+    scale: 1.07,
+    transformOrigin: 'center center',
+  })
+
+  const timeline = gsap.timeline({
+    defaults: {
+      duration: 0.86,
+      ease: 'power3.out',
+    },
+    scrollTrigger: {
+      trigger: root,
+      start: 'top 72%',
+      once: true,
+    },
+  })
+
+  timeline
+    .from('[data-cta-overlay]', {
+      autoAlpha: 0,
+      duration: 0.62,
+    })
+    .from(
+      '[data-cta-reveal]',
+      {
+        y: isMobile ? 22 : 34,
+        autoAlpha: 0,
+        stagger: 0.11,
+      },
+      '-=0.24',
+    )
+    .from(
+      '[data-cta-button]',
+      {
+        scale: 0.92,
+        autoAlpha: 0,
+        duration: 0.54,
+      },
+      '-=0.42',
+    )
+
+  gsap.to('[data-cta-image]', {
+    yPercent: isMobile ? -4 : -8,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: root,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 0.8,
+    },
+  })
+
+  if (!canHover) {
     return
   }
 
-  const { $gsap } = useNuxtApp()
-  const ctx = $gsap.context(() => {
-    $gsap.from('[data-cta-reveal]', {
-      y: 26,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: sectionRef.value,
-        start: 'top 72%',
-        once: true,
-      },
+  const button = root.querySelector<HTMLElement>('[data-cta-button]')
+
+  if (!button) {
+    return
+  }
+
+  const enter = () => {
+    gsap.to(button, {
+      y: -2,
+      scale: 1.03,
+      duration: 0.24,
+      ease: 'power2.out',
     })
-
-    $gsap.to('[data-cta-image]', {
-      yPercent: -6,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: sectionRef.value,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 0.8,
-      },
+  }
+  const leave = () => {
+    gsap.to(button, {
+      y: 0,
+      scale: 1,
+      duration: 0.3,
+      ease: 'power2.out',
     })
-  }, sectionRef.value)
+  }
 
-  cleanupAnimation = () => ctx.revert()
-})
+  button.addEventListener('pointerenter', enter)
+  button.addEventListener('pointerleave', leave)
 
-onUnmounted(() => {
-  cleanupAnimation?.()
+  return () => {
+    button.removeEventListener('pointerenter', enter)
+    button.removeEventListener('pointerleave', leave)
+  }
 })
 </script>
 
@@ -59,7 +108,10 @@ onUnmounted(() => {
       height="864"
       loading="lazy"
     >
-    <div class="absolute inset-0 bg-gradient-to-r from-hrm-ink via-hrm-ink/82 to-hrm-ink/28" />
+    <div
+      data-cta-overlay
+      class="absolute inset-0 bg-gradient-to-r from-hrm-ink via-hrm-ink/82 to-hrm-ink/28"
+    />
 
     <div class="section-shell relative">
       <div class="max-w-2xl">
@@ -83,7 +135,7 @@ onUnmounted(() => {
           impression wherever you go.
         </p>
         <a
-          data-cta-reveal
+          data-cta-button
           href="#contact"
           class="focus-ring mt-9 inline-flex min-h-11 items-center justify-center rounded-full bg-hrm-gold px-7 text-sm font-bold text-hrm-ink transition hover:bg-[#d2ad6b]"
         >

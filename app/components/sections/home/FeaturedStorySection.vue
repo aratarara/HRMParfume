@@ -1,46 +1,75 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const sectionRef = ref<HTMLElement | null>(null)
-let cleanupAnimation: (() => void) | undefined
 
-onMounted(() => {
-  if (!sectionRef.value || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return
-  }
+useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
+  gsap.set('[data-story-image]', {
+    scale: 1.1,
+    transformOrigin: 'center center',
+  })
 
-  const { $gsap } = useNuxtApp()
-  const ctx = $gsap.context(() => {
-    $gsap.from('[data-story-reveal]', {
-      y: 28,
-      opacity: 0,
-      duration: 0.9,
+  const timeline = gsap.timeline({
+    defaults: {
+      duration: 0.86,
       ease: 'power3.out',
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: sectionRef.value,
-        start: 'top 74%',
-        once: true,
-      },
-    })
+    },
+    scrollTrigger: {
+      trigger: root,
+      start: 'top 74%',
+      once: true,
+    },
+  })
 
-    $gsap.to('[data-story-image]', {
-      yPercent: -8,
+  timeline
+    .from('[data-story-reveal]', {
+      y: isMobile ? 22 : 32,
+      autoAlpha: 0,
+      stagger: 0.11,
+    })
+    .from(
+      '[data-story-frame]',
+      {
+        clipPath: 'inset(14% 0% 14% 0% round 2rem)',
+        autoAlpha: 0,
+        scale: 0.98,
+        duration: 1,
+      },
+      '-=0.48',
+    )
+    .from(
+      '[data-story-accent]',
+      {
+        scaleX: 0,
+        transformOrigin: 'left center',
+        duration: 0.74,
+      },
+      '-=0.52',
+    )
+
+  gsap.to('[data-story-image]', {
+    yPercent: isMobile ? -4 : -10,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: root,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 0.8,
+    },
+  })
+
+  if (!isMobile) {
+    gsap.to('[data-story-copy]', {
+      yPercent: 6,
       ease: 'none',
       scrollTrigger: {
-        trigger: sectionRef.value,
+        trigger: root,
         start: 'top bottom',
         end: 'bottom top',
-        scrub: 0.8,
+        scrub: 1,
       },
     })
-  }, sectionRef.value)
-
-  cleanupAnimation = () => ctx.revert()
-})
-
-onUnmounted(() => {
-  cleanupAnimation?.()
+  }
 })
 </script>
 
@@ -51,7 +80,10 @@ onUnmounted(() => {
     class="overflow-hidden bg-[#fbf8f1] py-20 sm:py-24 lg:py-28"
   >
     <div class="section-shell grid gap-10 lg:grid-cols-[0.86fr_1fr] lg:items-center lg:gap-16">
-      <div class="max-w-xl">
+      <div
+        data-story-copy
+        class="max-w-xl"
+      >
         <p
           data-story-reveal
           class="eyebrow"
@@ -72,10 +104,15 @@ onUnmounted(() => {
           blends soft freshness, warm depth, and refined sensuality in every
           bottle.
         </p>
+        <div
+          data-story-accent
+          class="mt-8 h-px w-24 bg-hrm-gold"
+          aria-hidden="true"
+        />
       </div>
 
       <figure
-        data-story-reveal
+        data-story-frame
         class="relative overflow-hidden rounded-[2rem] bg-hrm-ink shadow-[0_2rem_5rem_rgba(21,18,16,0.12)]"
       >
         <img

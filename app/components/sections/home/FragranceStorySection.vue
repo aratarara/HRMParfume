@@ -1,36 +1,66 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const sectionRef = ref<HTMLElement | null>(null)
-let cleanupAnimation: (() => void) | undefined
 
+const fragranceNotes = [
+  {
+    stage: 'Opening',
+    title: 'Fresh and inviting',
+    copy: 'A clean first impression that feels bright, polished, and easy to wear.',
+  },
+  {
+    stage: 'Heart',
+    title: 'Floral and refined',
+    copy: 'Soft florals bring an elegant signature without feeling heavy or loud.',
+  },
+  {
+    stage: 'Base',
+    title: 'Warm and lasting',
+    copy: 'Amber, musk, and woods settle close to the skin and leave a memorable trail.',
+  },
+]
 
-onMounted(() => {
-  if (!sectionRef.value || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return
-  }
-
-  const { $gsap } = useNuxtApp()
-  const ctx = $gsap.context(() => {
-    $gsap.from('[data-fragrance-reveal]', {
-      y: 26,
-      opacity: 0,
-      duration: 0.85,
+useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
+  const timeline = gsap.timeline({
+    defaults: {
+      duration: 0.82,
       ease: 'power3.out',
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: sectionRef.value,
-        start: 'top 74%',
-        once: true,
-      },
+    },
+    scrollTrigger: {
+      trigger: root,
+      start: 'top 74%',
+      once: true,
+    },
+  })
+
+  timeline
+    .from('[data-fragrance-reveal]', {
+      y: isMobile ? 22 : 30,
+      autoAlpha: 0,
+      stagger: 0.11,
     })
-  }, sectionRef.value)
-
-  cleanupAnimation = () => ctx.revert()
-})
-
-onUnmounted(() => {
-  cleanupAnimation?.()
+    .from(
+      '[data-fragrance-note]',
+      {
+        y: isMobile ? 20 : 30,
+        autoAlpha: 0,
+        rotateX: isMobile ? 0 : -6,
+        transformOrigin: 'center bottom',
+        stagger: 0.1,
+      },
+      '-=0.36',
+    )
+    .from(
+      '[data-fragrance-rule]',
+      {
+        scaleX: 0,
+        transformOrigin: 'left center',
+        stagger: 0.1,
+        duration: 0.62,
+      },
+      '-=0.52',
+    )
 })
 </script>
 
@@ -66,10 +96,38 @@ onUnmounted(() => {
         </p>
 
         <dl
-          data-fragrance-reveal
           class="mt-9 grid gap-4 sm:grid-cols-3"
           aria-label="HRM Parfume fragrance notes"
         >
+          <div
+            v-for="(note, index) in fragranceNotes"
+            :key="note.stage"
+            data-fragrance-note
+            class="rounded-lg border border-hrm-ink/10 bg-[#fbf8f1] p-5 shadow-[0_1rem_2.5rem_rgba(21,18,16,0.05)]"
+          >
+            <dt class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[0.2em] text-hrm-gold">
+              {{ note.stage }}
+              <span
+                class="text-[0.65rem] text-hrm-charcoal/42"
+                aria-hidden="true"
+              >
+                {{ String(index + 1).padStart(2, '0') }}
+              </span>
+            </dt>
+            <dd class="mt-5">
+              <div
+                data-fragrance-rule
+                class="mb-5 h-px w-12 bg-hrm-gold"
+                aria-hidden="true"
+              />
+              <p class="font-serif text-2xl italic leading-tight text-hrm-ink">
+                {{ note.title }}
+              </p>
+              <p class="mt-4 text-sm leading-7 text-hrm-charcoal/70">
+                {{ note.copy }}
+              </p>
+            </dd>
+          </div>
         </dl>
       </div>
     </div>
