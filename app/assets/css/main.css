@@ -1,27 +1,47 @@
 @import "tailwindcss";
 
+/*
+  HRM Parfume — Design Tokens
+  Mapped from DESIGN.md semantic tokens to Tailwind v4 theme variables.
+*/
 @theme {
-  --font-sans: Inter, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: Georgia, "Times New Roman", serif;
-  --color-hrm-ivory: #f6f1e8;
-  --color-hrm-warm: #ebe1d2;
-  --color-hrm-ink: #151210;
-  --color-hrm-charcoal: #2a2723;
-  --color-hrm-gold: #b99255;
-  --color-hrm-sage: #73806a;
-  --color-hrm-blush: #d9b8a7;
+  /* Font families */
+  --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* Surface tokens */
+  --color-surface: #f6f1e8;
+  --color-surface-soft: #efe6d8;
+  --color-surface-warm: #e6d8c5;
+  --color-surface-dark: #111111;
+  --color-surface-dark-soft: #1a1a1a;
+
+  /* Text tokens */
+  --color-ink: #171717;
+  --color-ink-secondary: #6f675f;
+  --color-ink-muted: #9a9188;
+
+  /* Accent tokens */
+  --color-gold: #b89764;
+  --color-bronze: #8a6a43;
+
+  /* State tokens */
+  --color-state-error: #b42318;
+  --color-state-success: #027a48;
+  --color-state-focus: #b89764;
 }
 
 @layer base {
   html {
-    scroll-padding-top: 1.5rem;
+    scroll-padding-top: 6rem;
     scroll-behavior: smooth;
   }
 
   body {
     margin: 0;
-    background: #f6f1e8;
-    color: #151210;
+    background: var(--color-surface);
+    color: var(--color-ink);
     font-family: var(--font-sans);
     text-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;
@@ -44,44 +64,140 @@
   }
 
   ::selection {
-    background: #b99255;
-    color: #151210;
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 }
 
 @layer components {
+  /* layout.container — aligns main content to a consistent container */
   .section-shell {
-    width: min(100% - 2rem, 76rem);
+    width: min(100% - 2.5rem, 80rem);
     margin-inline: auto;
   }
 
+  @media (min-width: 768px) {
+    .section-shell {
+      width: min(100% - 4rem, 80rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-shell {
+      width: min(100% - 6rem, 80rem);
+    }
+  }
+
+  /* Uppercase eyebrow label — controlled tracking, never below font.size.xs */
   .eyebrow {
-    color: #8e703d;
-    font-size: 0.72rem;
+    color: var(--color-bronze);
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.22em;
     line-height: 1.4;
     text-transform: uppercase;
   }
 
+  /* Editorial display heading */
   .luxury-heading {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 0.98;
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
   }
 
+  .luxury-heading--italic {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* Shared focus-visible ring using color.state.focus */
   .focus-ring {
     outline: 2px solid transparent;
-    outline-offset: 4px;
+    outline-offset: 3px;
     transition:
-      outline-color 180ms ease,
-      background-color 180ms ease,
-      color 180ms ease;
+      outline-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .focus-ring:focus-visible {
-    outline-color: #b99255;
+    outline-color: var(--color-state-focus);
+  }
+
+  /* Button primitives — minimum 44px tap target, radius.full */
+  .btn {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding-inline: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .btn-primary {
+    background: var(--color-ink);
+    color: #ffffff;
+  }
+
+  .btn-primary:hover {
+    background: #000000;
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  .btn-secondary {
+    border: 1px solid rgba(23, 23, 23, 0.2);
+    color: var(--color-ink);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-ink);
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(1px);
+  }
+
+  /* WhatsApp action button */
+  .btn-whatsapp {
+    background: var(--color-gold);
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+
+  .btn-whatsapp:hover {
+    background: #c9a974;
+  }
+
+  .btn-whatsapp:active {
+    transform: translateY(1px);
+  }
+
+  .btn[aria-disabled="true"] {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }

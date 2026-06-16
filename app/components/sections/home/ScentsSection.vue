@@ -3,24 +3,34 @@ import { ref } from 'vue'
 
 const sectionRef = ref<HTMLElement | null>(null)
 
+const { orderLink } = useWhatsApp()
+
 const products = [
   {
     name: 'Aurora Bloom',
     type: 'Eau de Parfum',
+    size: '50ml',
+    price: 'Rp 285.000',
     image: '/images/hrm/perfume-1.jpg',
-    alt: 'Aurora Bloom perfume bottle with jasmine flowers and citrus accents',
+    alt: 'Botol parfum Aurora Bloom dengan aksen bunga jasmine dan citrus',
     description:
-      'A soft floral fragrance with fresh citrus, jasmine, rose, musk, and vanilla. Designed for daily elegance and effortless confidence.',
+      'Wewangian floral lembut dengan fresh citrus, jasmine, rose, musk, dan vanilla. Dirancang untuk keanggunan sehari-hari dan rasa percaya diri yang effortless.',
     notes: 'Fresh Citrus, Jasmine, Rose, Musk, Vanilla',
+    mood: 'Fresh, Floral, Soft',
+    occasion: 'Pemakaian Harian',
   },
   {
     name: 'Noir Woods',
     type: 'Eau de Parfum',
+    size: '50ml',
+    price: 'Rp 285.000',
     image: '/images/hrm/perfume-2.jpg',
-    alt: 'Noir Woods dark perfume bottle with sandalwood and amber accents',
+    alt: 'Botol parfum Noir Woods berwarna gelap dengan aksen sandalwood dan amber',
     description:
-      'A warm woody fragrance with black pepper, amber, sandalwood, and tonka bean. Made for evening moments and a bold lasting impression.',
+      'Wewangian woody hangat dengan black pepper, amber, sandalwood, dan tonka bean. Dibuat untuk momen malam hari dan kesan kuat yang tahan lama.',
     notes: 'Black Pepper, Amber, Sandalwood, Tonka Bean',
+    mood: 'Warm, Woody, Bold',
+    occasion: 'Malam Hari',
   },
 ]
 
@@ -90,76 +100,23 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
       '-=0.48',
     )
 
-  if (!isMobile) {
-    gsap.utils.toArray<HTMLElement>('[data-product-card]').forEach((card) => {
-      const image = card.querySelector<HTMLElement>('[data-product-image]')
-
-      if (!image) {
-        return
-      }
-
-      gsap.to(image, {
-        yPercent: -4,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 0.9,
-        },
-      })
-    })
-  }
-
   if (!canHover) {
     return
   }
 
   const cleanupHandlers = gsap.utils.toArray<HTMLElement>('[data-product-card]').map((card) => {
     const image = card.querySelector<HTMLElement>('[data-product-image]')
-    const cta = card.querySelector<HTMLElement>('[data-product-cta]')
 
     const enter = () => {
-      gsap.to(card, {
-        y: -6,
-        duration: 0.32,
-        ease: 'power2.out',
-      })
+      gsap.to(card, { y: -6, duration: 0.32, ease: 'power2.out' })
       if (image) {
-        gsap.to(image, {
-          scale: 1.13,
-          duration: 0.48,
-          ease: 'power2.out',
-        })
-      }
-      if (cta) {
-        gsap.to(cta, {
-          x: 4,
-          duration: 0.26,
-          ease: 'power2.out',
-        })
+        gsap.to(image, { scale: 1.13, duration: 0.48, ease: 'power2.out' })
       }
     }
-
     const leave = () => {
-      gsap.to(card, {
-        y: 0,
-        duration: 0.36,
-        ease: 'power2.out',
-      })
+      gsap.to(card, { y: 0, duration: 0.36, ease: 'power2.out' })
       if (image) {
-        gsap.to(image, {
-          scale: 1.08,
-          duration: 0.5,
-          ease: 'power2.out',
-        })
-      }
-      if (cta) {
-        gsap.to(cta, {
-          x: 0,
-          duration: 0.3,
-          ease: 'power2.out',
-        })
+        gsap.to(image, { scale: 1.08, duration: 0.5, ease: 'power2.out' })
       }
     }
 
@@ -180,7 +137,7 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
   <section
     id="scents"
     ref="sectionRef"
-    class="bg-[#fbf8f1] py-20 sm:py-24 lg:py-28"
+    class="bg-surface-soft py-20 sm:py-24 lg:py-28"
   >
     <div class="section-shell">
       <div
@@ -188,14 +145,15 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
         class="grid gap-6 lg:grid-cols-[0.9fr_1fr] lg:items-end"
       >
         <div>
-          <p class="eyebrow">Signature collection</p>
-          <h2 class="luxury-heading mt-5 text-4xl text-hrm-ink sm:text-5xl lg:text-7xl">
+          <p class="eyebrow">Koleksi signature</p>
+          <h2 class="luxury-heading luxury-heading--italic mt-5 text-4xl text-ink sm:text-5xl lg:text-6xl">
             Signature Scents
           </h2>
         </div>
-        <p class="max-w-xl text-base leading-8 text-hrm-charcoal/74 lg:justify-self-end">
-          Two refined compositions define the HRM Parfume collection: fresh floral
-          softness for daily elegance and warm woody depth for evening presence.
+        <p class="max-w-xl text-base leading-relaxed text-ink-secondary lg:justify-self-end">
+          Dua komposisi pilihan mendefinisikan koleksi HRM Parfume: kelembutan
+          floral segar untuk keanggunan harian dan kedalaman woody hangat untuk
+          kehadiran malam hari.
         </p>
       </div>
 
@@ -207,11 +165,11 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
           v-for="product in products"
           :key="product.name"
           data-product-card
-          class="rounded-lg border border-hrm-ink/10 bg-hrm-ivory p-4 shadow-[0_1.5rem_4rem_rgba(21,18,16,0.07)] sm:p-5"
+          class="flex flex-col rounded-xl border border-ink/10 bg-surface p-4 shadow-[0_12px_32px_rgba(0,0,0,0.06)] sm:p-5"
         >
           <div
             data-product-image-wrap
-            class="aspect-[4/3] w-full overflow-hidden rounded-[1.75rem] bg-hrm-warm"
+            class="aspect-[4/3] w-full overflow-hidden rounded-lg bg-surface-warm"
           >
             <img
               data-product-image
@@ -219,33 +177,58 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
               :alt="product.alt"
               class="h-full w-full object-cover"
               width="1214"
-              height="1214"
+              height="910"
               loading="lazy"
             >
           </div>
           <div
             data-product-copy
-            class="p-2 pt-6 sm:p-4 sm:pt-7"
+            class="flex flex-1 flex-col p-2 pt-6 sm:p-3 sm:pt-7"
           >
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-hrm-gold">
-              {{ product.type }}
-            </p>
-            <h3 class="mt-4 font-serif text-4xl italic text-hrm-ink sm:text-5xl">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-bold uppercase tracking-[0.18em] text-bronze">
+              <span>{{ product.type }}</span>
+              <span
+                class="text-ink-muted"
+                aria-hidden="true"
+              >•</span>
+              <span class="text-ink-secondary">{{ product.size }}</span>
+            </div>
+            <h3 class="mt-4 font-display text-3xl italic text-ink sm:text-4xl">
               {{ product.name }}
             </h3>
-            <p class="mt-4 max-w-2xl text-base leading-8 text-hrm-charcoal/76">
+            <p class="mt-3 text-sm leading-relaxed text-ink-secondary">
               {{ product.description }}
             </p>
-            <p class="mt-6 text-sm font-semibold uppercase tracking-[0.16em] text-hrm-charcoal/66">
-              Notes: {{ product.notes }}
-            </p>
-            <a
-              href="#contact"
-              data-product-cta
-              class="focus-ring mt-7 inline-flex min-h-11 items-center justify-center rounded-full border border-hrm-ink/18 px-5 text-sm font-semibold text-hrm-ink transition hover:border-hrm-ink hover:bg-white/55"
-            >
-              Discover the Scent
-            </a>
+
+            <dl class="mt-5 space-y-2 text-sm">
+              <div class="flex gap-2">
+                <dt class="shrink-0 font-semibold text-ink">Notes:</dt>
+                <dd class="text-ink-secondary">{{ product.notes }}</dd>
+              </div>
+              <div class="flex gap-2">
+                <dt class="shrink-0 font-semibold text-ink">Mood:</dt>
+                <dd class="text-ink-secondary">{{ product.mood }}</dd>
+              </div>
+              <div class="flex gap-2">
+                <dt class="shrink-0 font-semibold text-ink">Cocok untuk:</dt>
+                <dd class="text-ink-secondary">{{ product.occasion }}</dd>
+              </div>
+            </dl>
+
+            <div class="mt-auto flex flex-wrap items-center justify-between gap-4 pt-7">
+              <p class="font-display text-2xl text-ink">
+                {{ product.price }}
+              </p>
+              <a
+                :href="orderLink(product.name)"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-whatsapp focus-ring"
+                :aria-label="`Pesan ${product.name} via WhatsApp`"
+              >
+                Pesan via WhatsApp
+              </a>
+            </div>
           </div>
         </article>
       </div>

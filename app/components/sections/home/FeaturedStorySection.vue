@@ -77,7 +77,7 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
   <section
     id="story"
     ref="sectionRef"
-    class="overflow-hidden bg-[#fbf8f1] py-20 sm:py-24 lg:py-28"
+    class="overflow-hidden bg-surface-soft py-20 sm:py-24 lg:py-28"
   >
     <div class="section-shell grid gap-10 lg:grid-cols-[0.86fr_1fr] lg:items-center lg:gap-16">
       <div
@@ -88,37 +88,37 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
           data-story-reveal
           class="eyebrow"
         >
-          Featured fragrance story
+          Cerita wewangian unggulan
         </p>
         <h2
           data-story-reveal
-          class="luxury-heading mt-5 text-4xl text-hrm-ink sm:text-5xl lg:text-7xl"
+          class="luxury-heading luxury-heading--italic mt-5 text-4xl text-ink sm:text-5xl lg:text-6xl"
         >
-          Your New Obsession
+          Obsesi Baru Anda
         </h2>
         <p
           data-story-reveal
-          class="mt-7 text-lg leading-9 text-hrm-charcoal/78"
+          class="mt-7 text-lg leading-relaxed text-ink-secondary"
         >
-          Created for those who want their presence to be remembered, HRM Parfume
-          blends soft freshness, warm depth, and refined sensuality in every
-          bottle.
+          Diciptakan untuk mereka yang ingin kehadirannya selalu dikenang, HRM
+          Parfume memadukan kesegaran lembut, kedalaman hangat, dan sensualitas
+          yang halus dalam setiap botol.
         </p>
         <div
           data-story-accent
-          class="mt-8 h-px w-24 bg-hrm-gold"
+          class="mt-8 h-px w-24 bg-gold"
           aria-hidden="true"
         />
       </div>
 
       <figure
         data-story-frame
-        class="relative overflow-hidden rounded-[2rem] bg-hrm-ink shadow-[0_2rem_5rem_rgba(21,18,16,0.12)]"
+        class="relative overflow-hidden rounded-[2rem] bg-surface-dark shadow-[0_16px_48px_rgba(0,0,0,0.12)]"
       >
         <img
           data-story-image
           src="/images/hrm/campaign-perfume.jpg"
-          alt="Luxury perfume bottle glowing against dark satin in an editorial campaign setting"
+          alt="Botol parfum mewah bercahaya di atas satin gelap dalam suasana kampanye editorial"
           class="h-[28rem] w-full scale-110 object-cover sm:h-[34rem] lg:h-[42rem]"
           width="1536"
           height="864"

@@ -3,6 +3,8 @@ import { ref } from 'vue'
 
 const sectionRef = ref<HTMLElement | null>(null)
 
+const { contactLink } = useWhatsApp()
+
 useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
   gsap.set('[data-cta-image]', {
     scale: 1.07,
@@ -67,20 +69,10 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
   }
 
   const enter = () => {
-    gsap.to(button, {
-      y: -2,
-      scale: 1.03,
-      duration: 0.24,
-      ease: 'power2.out',
-    })
+    gsap.to(button, { y: -2, scale: 1.03, duration: 0.24, ease: 'power2.out' })
   }
   const leave = () => {
-    gsap.to(button, {
-      y: 0,
-      scale: 1,
-      duration: 0.3,
-      ease: 'power2.out',
-    })
+    gsap.to(button, { y: 0, scale: 1, duration: 0.3, ease: 'power2.out' })
   }
 
   button.addEventListener('pointerenter', enter)
@@ -97,12 +89,12 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
   <section
     id="contact"
     ref="sectionRef"
-    class="relative overflow-hidden bg-hrm-ink py-20 text-white sm:py-24 lg:py-28"
+    class="relative overflow-hidden bg-surface-dark py-20 text-white sm:py-24 lg:py-28"
   >
     <img
       data-cta-image
       src="/images/hrm/cta-perfume.jpg"
-      alt="Luxury amber perfume bottle on a dark satin surface"
+      alt="Botol parfum amber mewah di atas permukaan satin gelap"
       class="absolute inset-0 h-[112%] w-full object-cover opacity-70"
       width="1536"
       height="864"
@@ -110,36 +102,38 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
     >
     <div
       data-cta-overlay
-      class="absolute inset-0 bg-gradient-to-r from-hrm-ink via-hrm-ink/82 to-hrm-ink/28"
+      class="absolute inset-0 bg-gradient-to-r from-surface-dark via-surface-dark/85 to-surface-dark/30"
     />
 
     <div class="section-shell relative">
       <div class="max-w-2xl">
         <p
           data-cta-reveal
-          class="eyebrow text-hrm-gold"
+          class="eyebrow text-gold"
         >
-          Contact
+          Kontak
         </p>
         <h2
           data-cta-reveal
-          class="luxury-heading mt-5 text-4xl text-white sm:text-5xl lg:text-7xl"
+          class="luxury-heading luxury-heading--italic mt-5 text-4xl text-white sm:text-5xl lg:text-6xl"
         >
-          Your Signature Scent is Just a Click Away
+          Aroma Signature Anda Hanya Sejauh Satu Klik
         </h2>
         <p
           data-cta-reveal
-          class="mt-7 text-lg leading-9 text-white/72"
+          class="mt-7 text-lg leading-relaxed text-white/75"
         >
-          Discover a fragrance that matches your character and leaves an elegant
-          impression wherever you go.
+          Temukan wewangian yang sesuai dengan karakter Anda dan meninggalkan
+          kesan elegan ke mana pun Anda pergi.
         </p>
         <a
           data-cta-button
-          href="#contact"
-          class="focus-ring mt-9 inline-flex min-h-11 items-center justify-center rounded-full bg-hrm-gold px-7 text-sm font-bold text-hrm-ink transition hover:bg-[#d2ad6b]"
+          :href="contactLink()"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-whatsapp focus-ring mt-9"
         >
-          Contact Us
+          Hubungi Kami via WhatsApp
         </a>
       </div>
     </div>

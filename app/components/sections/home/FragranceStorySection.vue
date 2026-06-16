@@ -5,19 +5,19 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 const fragranceNotes = [
   {
-    stage: 'Opening',
-    title: 'Fresh and inviting',
-    copy: 'A clean first impression that feels bright, polished, and easy to wear.',
+    stage: 'Top Notes',
+    title: 'Segar dan mengundang',
+    copy: 'Bergamot dan citrus segar memberi kesan pertama yang cerah, bersih, dan mudah dikenakan.',
   },
   {
-    stage: 'Heart',
-    title: 'Floral and refined',
-    copy: 'Soft florals bring an elegant signature without feeling heavy or loud.',
+    stage: 'Heart Notes',
+    title: 'Floral dan halus',
+    copy: 'Jasmine dan soft rose menghadirkan signature elegan tanpa terasa berat atau berlebihan.',
   },
   {
-    stage: 'Base',
-    title: 'Warm and lasting',
-    copy: 'Amber, musk, and woods settle close to the skin and leave a memorable trail.',
+    stage: 'Base Notes',
+    title: 'Hangat dan tahan lama',
+    copy: 'Amber, musk, dan sandalwood menetap dekat di kulit dan meninggalkan jejak yang berkesan.',
   },
 ]
 
@@ -45,8 +45,6 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
       {
         y: isMobile ? 20 : 30,
         autoAlpha: 0,
-        rotateX: isMobile ? 0 : -6,
-        transformOrigin: 'center bottom',
         stagger: 0.1,
       },
       '-=0.36',
@@ -67,7 +65,7 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
 <template>
   <section
     ref="sectionRef"
-    class="bg-hrm-ivory py-20 sm:py-24 lg:py-28"
+    class="bg-surface py-20 sm:py-24 lg:py-28"
   >
     <div class="section-shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
       <div>
@@ -75,40 +73,40 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
           data-fragrance-reveal
           class="eyebrow"
         >
-          Fragrance storytelling
+          Filosofi wewangian
         </p>
         <h2
           data-fragrance-reveal
-          class="luxury-heading mt-5 text-4xl text-hrm-ink sm:text-5xl lg:text-7xl"
+          class="luxury-heading luxury-heading--italic mt-5 text-4xl text-ink sm:text-5xl lg:text-6xl"
         >
-          Our Fragrances
+          Wewangian Kami
         </h2>
       </div>
 
       <div>
         <p
           data-fragrance-reveal
-          class="max-w-3xl text-lg leading-9 text-hrm-charcoal/78"
+          class="max-w-3xl text-lg leading-relaxed text-ink-secondary"
         >
-          Every HRM Parfume creation is designed as a personal signature. From the
-          first fresh impression to the warm base that lingers, each scent is made
-          to feel elegant, memorable, and easy to wear.
+          Setiap kreasi HRM Parfume dirancang sebagai signature personal. Dari
+          kesan segar pertama hingga base hangat yang menetap, setiap aroma dibuat
+          agar terasa elegan, berkesan, dan mudah dikenakan.
         </p>
 
         <dl
           class="mt-9 grid gap-4 sm:grid-cols-3"
-          aria-label="HRM Parfume fragrance notes"
+          aria-label="Tahapan aroma HRM Parfume"
         >
           <div
             v-for="(note, index) in fragranceNotes"
             :key="note.stage"
             data-fragrance-note
-            class="rounded-lg border border-hrm-ink/10 bg-[#fbf8f1] p-5 shadow-[0_1rem_2.5rem_rgba(21,18,16,0.05)]"
+            class="rounded-lg border border-ink/10 bg-surface-soft p-5 shadow-[0_12px_32px_rgba(0,0,0,0.06)]"
           >
-            <dt class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[0.2em] text-hrm-gold">
+            <dt class="flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[0.2em] text-bronze">
               {{ note.stage }}
               <span
-                class="text-[0.65rem] text-hrm-charcoal/42"
+                class="text-xs text-ink-muted"
                 aria-hidden="true"
               >
                 {{ String(index + 1).padStart(2, '0') }}
@@ -117,13 +115,13 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
             <dd class="mt-5">
               <div
                 data-fragrance-rule
-                class="mb-5 h-px w-12 bg-hrm-gold"
+                class="mb-5 h-px w-12 bg-gold"
                 aria-hidden="true"
               />
-              <p class="font-serif text-2xl italic leading-tight text-hrm-ink">
+              <p class="font-display text-2xl italic leading-tight text-ink">
                 {{ note.title }}
               </p>
-              <p class="mt-4 text-sm leading-7 text-hrm-charcoal/70">
+              <p class="mt-4 text-sm leading-relaxed text-ink-secondary">
                 {{ note.copy }}
               </p>
             </dd>

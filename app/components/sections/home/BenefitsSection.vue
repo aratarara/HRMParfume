@@ -5,28 +5,28 @@ const sectionRef = ref<HTMLElement | null>(null)
 
 const benefits = [
   {
-    title: 'Long-lasting Scent',
-    copy: 'Warm base notes help each fragrance stay present, comfortable, and memorable.',
+    title: 'Aroma Tahan Lama',
+    copy: 'Base notes hangat membantu setiap wewangian tetap hadir, nyaman, dan berkesan.',
   },
   {
-    title: 'Balanced Aroma',
-    copy: 'Fresh, floral, and woody notes are composed to feel smooth from first spray.',
+    title: 'Komposisi Seimbang',
+    copy: 'Notes fresh, floral, dan woody diracik agar terasa halus sejak semprotan pertama.',
   },
   {
-    title: 'Elegant Packaging',
-    copy: 'Rounded bottles and refined tones keep the presentation understated and premium.',
+    title: 'Kemasan Elegan',
+    copy: 'Botol membulat dan warna lembut menjaga presentasi tetap understated dan premium.',
   },
   {
-    title: 'Small-Batch Feel',
-    copy: 'A focused collection gives each fragrance a clear, personal character.',
+    title: 'Kesan Small-Batch',
+    copy: 'Koleksi yang terfokus memberi setiap wewangian karakter yang jelas dan personal.',
   },
   {
-    title: 'Daily & Special Occasion Use',
-    copy: 'Soft enough for daily rituals and polished enough for moments that matter.',
+    title: 'Harian & Acara Spesial',
+    copy: 'Cukup lembut untuk ritual harian dan cukup elegan untuk momen yang berarti.',
   },
   {
-    title: 'Unisex Character',
-    copy: 'Built around mood and presence instead of fixed fragrance categories.',
+    title: 'Karakter Unisex',
+    copy: 'Dibangun di sekitar mood dan kehadiran, bukan kategori wewangian yang kaku.',
   },
 ]
 
@@ -62,7 +62,6 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
       '[data-benefit-index]',
       {
         scale: 0.68,
-        rotate: isMobile ? 0 : -10,
         autoAlpha: 0,
         stagger: 0.065,
         duration: 0.52,
@@ -78,8 +77,8 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
     const enter = () => {
       gsap.to(card, {
         y: -4,
-        backgroundColor: 'rgba(255,255,255,0.065)',
-        borderColor: 'rgba(185,146,85,0.38)',
+        backgroundColor: 'rgba(255,255,255,0.06)',
+        borderColor: 'rgba(184,151,100,0.4)',
         duration: 0.28,
         ease: 'power2.out',
       })
@@ -88,7 +87,7 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
       gsap.to(card, {
         y: 0,
         backgroundColor: 'rgba(255,255,255,0.035)',
-        borderColor: 'rgba(255,255,255,0.14)',
+        borderColor: 'rgba(255,255,255,0.18)',
         duration: 0.32,
         ease: 'power2.out',
       })
@@ -111,37 +110,29 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
   <section
     id="benefits"
     ref="sectionRef"
-    class="bg-hrm-ink py-20 text-hrm-ivory sm:py-24 lg:py-28"
+    class="bg-surface-dark py-20 text-white sm:py-24 lg:py-28"
   >
     <div class="section-shell">
       <div data-benefit-header>
-        <p
-          class="eyebrow text-hrm-gold"
-        >
-          Why HRM Parfume
+        <p class="eyebrow text-gold">
+          Mengapa HRM Parfume
         </p>
-        <h2
-          class="luxury-heading mt-5 max-w-4xl text-4xl text-white sm:text-5xl lg:text-7xl"
-        >
-          Benefits Just for You
+        <h2 class="luxury-heading luxury-heading--italic mt-5 max-w-4xl text-4xl text-white sm:text-5xl lg:text-6xl">
+          Keunggulan untuk Anda
         </h2>
-        <p
-          class="mt-7 max-w-3xl text-lg leading-9 text-white/68"
-        >
-          HRM Parfume is crafted to bring everyday elegance through balanced
-          composition, lasting comfort, and a scent character that feels personal.
+        <p class="mt-7 max-w-3xl text-lg leading-relaxed text-white/70">
+          HRM Parfume diracik untuk menghadirkan keanggunan setiap hari melalui
+          komposisi yang seimbang, kenyamanan yang tahan lama, dan karakter aroma
+          yang terasa personal.
         </p>
       </div>
 
-      <ul
-        data-benefits-grid
-        class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-      >
+      <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <li
           v-for="(benefit, index) in benefits"
           :key="benefit.title"
           data-benefit-card
-          class="rounded-lg border border-white/14 bg-white/[0.035] p-5"
+          class="rounded-lg border border-white/[0.18] bg-white/[0.035] p-6"
         >
           <div class="flex items-start justify-between gap-5">
             <h3 class="text-base font-semibold text-white">
@@ -149,13 +140,13 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile, canHover }) => {
             </h3>
             <span
               data-benefit-index
-              class="flex size-10 shrink-0 items-center justify-center rounded-full border border-hrm-gold/45 text-xs font-bold text-hrm-gold"
+              class="flex size-10 shrink-0 items-center justify-center rounded-full border border-gold/45 text-xs font-bold text-gold"
               aria-hidden="true"
             >
               {{ String(index + 1).padStart(2, '0') }}
             </span>
           </div>
-          <p class="mt-3 text-sm leading-7 text-white/60">
+          <p class="mt-3 text-sm leading-relaxed text-white/65">
             {{ benefit.copy }}
           </p>
         </li>

@@ -4,15 +4,22 @@ import { ref } from 'vue'
 const sectionRef = ref<HTMLElement | null>(null)
 
 const guideCards = [
-  'Choose Aurora Bloom if you love soft, fresh, floral elegance for daily wear.',
-  'Choose Noir Woods if you prefer warm, woody, bold character for evening moments.',
+  {
+    name: 'Aurora Bloom',
+    copy: 'Pilih Aurora Bloom jika Anda menyukai keanggunan floral yang lembut dan segar untuk pemakaian harian.',
+  },
+  {
+    name: 'Noir Woods',
+    copy: 'Pilih Noir Woods jika Anda lebih suka karakter woody yang hangat dan bold untuk momen malam hari.',
+  },
 ]
 
 const useTips = [
-  'Spray on pulse points',
-  'Keep 15 cm distance',
-  'Do not rub after spraying',
-  'Store in a cool, dry place',
+  'Semprotkan pada titik nadi',
+  'Jaga jarak sekitar 15 cm',
+  'Jangan digosok setelah disemprot',
+  'Hindari area mata dan wajah',
+  'Simpan di tempat sejuk dan kering',
 ]
 
 useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
@@ -72,26 +79,13 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
       },
       '<',
     )
-
-  if (!isMobile) {
-    gsap.to('[data-guide-aside]', {
-      yPercent: -4,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: root,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 0.9,
-      },
-    })
-  }
 })
 </script>
 
 <template>
   <section
     ref="sectionRef"
-    class="bg-[#fbf8f1] py-20 sm:py-24 lg:py-28"
+    class="bg-surface py-20 sm:py-24 lg:py-28"
   >
     <div class="section-shell">
       <div
@@ -99,57 +93,61 @@ useGsapSection(sectionRef, ({ gsap, root, isMobile }) => {
         class="grid gap-6 lg:grid-cols-[0.85fr_1fr] lg:items-end"
       >
         <div>
-          <p class="eyebrow">Fragrance guide</p>
-          <h2 class="luxury-heading mt-5 text-4xl text-hrm-ink sm:text-5xl lg:text-7xl">
-            Which HRM Scent Is Right for You?
+          <p class="eyebrow">Panduan wewangian</p>
+          <h2 class="luxury-heading luxury-heading--italic mt-5 text-4xl text-ink sm:text-5xl lg:text-6xl">
+            Aroma HRM Mana yang Tepat untuk Anda?
           </h2>
         </div>
-        <p class="max-w-xl text-base leading-8 text-hrm-charcoal/74 lg:justify-self-end">
-          Match your scent to the moment, then wear it with a light, considered
-          ritual that keeps the fragrance elegant.
+        <p class="max-w-xl text-base leading-relaxed text-ink-secondary lg:justify-self-end">
+          Sesuaikan aroma dengan momen Anda, lalu kenakan dengan ritual yang
+          ringan dan terukur agar wewangian tetap terasa elegan.
         </p>
       </div>
 
       <div class="mt-12 grid gap-6 lg:grid-cols-[1fr_0.78fr]">
-        <div
-          class="grid gap-4 sm:grid-cols-2"
-        >
+        <div class="grid gap-4 sm:grid-cols-2">
           <article
-            v-for="(card, index) in guideCards"
-            :key="card"
+            v-for="card in guideCards"
+            :key="card.name"
             data-guide-card
-            class="rounded-lg border border-hrm-ink/10 bg-hrm-ivory p-6"
+            class="flex flex-col rounded-lg border border-ink/10 bg-surface-soft p-6"
           >
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-hrm-gold">
-              {{ index === 0 ? 'Aurora Bloom' : 'Noir Woods' }}
+            <p class="text-xs font-bold uppercase tracking-[0.2em] text-bronze">
+              {{ card.name }}
             </p>
-            <p class="mt-8 text-lg leading-8 text-hrm-ink">
-              {{ card }}
+            <p class="mt-6 text-lg leading-relaxed text-ink">
+              {{ card.copy }}
             </p>
+            <a
+              href="#scents"
+              class="focus-ring mt-auto inline-flex pt-6 text-sm font-semibold text-bronze underline-offset-4 hover:underline"
+            >
+              Lihat aroma ini →
+            </a>
           </article>
         </div>
 
         <aside
           data-guide-aside
-          class="rounded-lg bg-hrm-ink p-6 text-white"
+          class="rounded-lg bg-surface-dark p-7 text-white"
           aria-labelledby="how-to-use-title"
         >
           <h3
             id="how-to-use-title"
-            class="font-serif text-3xl italic"
+            class="font-display text-3xl italic"
           >
-            How to Use
+            Cara Pemakaian
           </h3>
           <ul class="mt-6 space-y-4">
             <li
               v-for="tip in useTips"
               :key="tip"
               data-guide-tip
-              class="flex gap-3 text-sm leading-7 text-white/72"
+              class="flex gap-3 text-sm leading-relaxed text-white/75"
             >
               <span
                 data-guide-line
-                class="mt-3 h-px w-6 shrink-0 bg-hrm-gold"
+                class="mt-3 h-px w-6 shrink-0 bg-gold"
                 aria-hidden="true"
               />
               <span>{{ tip }}</span>
