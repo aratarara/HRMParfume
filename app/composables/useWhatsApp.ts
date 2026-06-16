@@ -3,10 +3,8 @@
  *
  * The order flow is intentionally static: every CTA resolves to a wa.me link
  * with a prefilled, URL-encoded Indonesian message. No cart, checkout, or API.
- *
- * Replace WHATSAPP_NUMBER with the real HRM Parfume business number.
  */
-const WHATSAPP_NUMBER = '6281234567890'
+const WHATSAPP_NUMBER = '6287887638273'
 
 export function useWhatsApp() {
   const buildLink = (message: string): string => {
